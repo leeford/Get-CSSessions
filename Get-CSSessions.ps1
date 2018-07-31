@@ -253,6 +253,7 @@ function ProcessUserSessions($User, $Counter) {
     
     # Strip sip: from SIP Address
     $SipURI = $User.SipAddress.Replace("sip:","")
+    $SipURI = $User.SipAddress.Replace("SIP:","")
     
     Write-Host "`nChecking $SipURI for sessions..."
 
