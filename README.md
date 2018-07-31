@@ -16,7 +16,9 @@ For more details go to https://wp.me/p97Bkx-ec
 ## LINK
 
 Blog: https://www.lee-ford.co.uk
+
 Twitter: http://www.twitter.com/lee_ford
+
 LinkedIn: https://www.linkedin.com/in/lee-ford/
  
 ## EXAMPLE
