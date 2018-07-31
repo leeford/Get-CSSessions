@@ -52,7 +52,8 @@
     Will retrieve all user conference sessions for the last 10 days from now including full session information (e.g. QoE report) and save as a CSV file.
 
 .NOTES
-    v1.0 Initial release
+    v1.0 - Initial release
+    v1.1 - Added ability to specify group of users from CSV file
      
 #>
 
@@ -447,7 +448,7 @@ function UpdateProgress($counter, $UserSipAddress) {
 
 # Start
 Write-Host "`n----------------------------------------------------------------------------------------------
-            `n Get-CSSessions.ps1 v1.0 - Lee Ford 2018 - https://www.lee-ford.co.uk
+            `n Get-CSSessions.ps1 v1.1 - Lee Ford 2018 - https://www.lee-ford.co.uk
             `n----------------------------------------------------------------------------------------------" -ForegroundColor Yellow
 
 # Getting sessions based on...

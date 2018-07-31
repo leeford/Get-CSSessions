@@ -55,4 +55,5 @@ LinkedIn: https://www.linkedin.com/in/lee-ford/
 
 
 ## NOTES
-v1.0 Initial release
+v1.0 - Initial release
+v1.1 - Added ability to specify group of users from CSV file
