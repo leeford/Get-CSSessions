@@ -3,23 +3,21 @@ PowerShell script to get ALL user sessions
 
 ## SYNOPSIS
  
-    Get-CSSessions - PowerShell script to get ALL user (inc. call queue) sessions using Get-CSUserSession
+Get-CSSessions - PowerShell script to get ALL user (inc. call queue) sessions using Get-CSUserSession
  
 ## DESCRIPTION
 
-    Author: Lee Ford
+Author: Lee Ford
 
-    Using this script you can use Get-CSUserSession to gather ALL user sessions for ALL users between two dates. This will keep retrieving sessions,
-    not just the first 1000 like Get-CSUserSession. In addition, you can filter on a particular user, a particular URI, all sessions or just audio sessions,
-    include/exclude incomplete sessions etc.
+Using this script you can use Get-CSUserSession to gather ALL user sessions for ALL users between two dates. This will keep retrieving sessions, not just the first 1000 like Get-CSUserSession. In addition, you can filter on a particular user, a particular URI, all sessions or just audio sessions, include/exclude incomplete sessions etc.
    
-    For more details go to https://wp.me/p97Bkx-ec
+For more details go to https://wp.me/p97Bkx-ec
 
 ## LINK
 
-    Blog: https://www.lee-ford.co.uk
-    Twitter: http://www.twitter.com/lee_ford
-    LinkedIn: https://www.linkedin.com/in/lee-ford/
+Blog: https://www.lee-ford.co.uk
+Twitter: http://www.twitter.com/lee_ford
+LinkedIn: https://www.linkedin.com/in/lee-ford/
  
 ## EXAMPLE
    
@@ -51,4 +49,4 @@ PowerShell script to get ALL user sessions
     Will retrieve all user conference sessions for the last 10 days from now including full session information (e.g. QoE report) and save as a CSV file.
 
 ## NOTES
-    v1.0 Initial release
+v1.0 Initial release
