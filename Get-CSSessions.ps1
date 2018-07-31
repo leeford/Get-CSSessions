@@ -8,8 +8,8 @@
     Author: Lee Ford
 
     Using this script you can use Get-CSUserSession to gather ALL user sessions for ALL users between two dates. This will keep retrieving sessions,
-    not just the first 1000 like Get-CSUserSession. In addition, you can filter on a particular user, a particular URI, all sessions or just audio sessions, 
-    include/exclude incomplete sessions etc.
+    not just the first 1000 like Get-CSUserSession. You can filter on a particular user, a particular URI, all sessions or just specific (Audio, Conference, IM and Video) sessions, 
+    include/exclude incomplete sessions etc. You can get sessions for a single user, a list of users in a CSV file or all users (priority in that order).
     
     For more details go to https://wp.me/p97Bkx-ec
 
@@ -29,6 +29,9 @@
 
     .\Get-CSSessions.ps1 -SessionType Audio -OutputType GridView -DaysToSearch 10 -User user@domain.com
     Will retrieve user audio sessions for user@domain.com for the last 10 days from now and output to GridView.
+
+    \Get-CSSessions.ps1 -SessionType Audio -OutputType GridView -DaysToSearch 10 -ImportUserCSV c:\temp\users.csv
+    Will retrieve user audio sessions for all enabled users in c:\temp\users.csv for the last 10 days from now and output to GridView.
 
     .\Get-CSSessions.ps1 -SessionType All -OutputType CSV -CSVSavePath C:\Temp\Sessions.csv -DaysToSearch 10 -EndDate "04/24/2018 18:00"
     Will retrieve all user sessions between 14th April 2018 18:00 to 24th April 2018 18:00 and save as a CSV file.
@@ -64,7 +67,8 @@ param(
     [Parameter(mandatory=$false)][string]$User,
     [Parameter(mandatory=$false)][string]$URI,
     [Parameter(mandatory=$false)][datetime]$EndDate,
-    [Parameter(mandatory=$false)][PSCredential]$Credential
+    [Parameter(mandatory=$false)][PSCredential]$Credential,
+    [Parameter(mandatory=$false)][string]$ImportUserCSV
 )
 
 # Check prerequisites
@@ -454,6 +458,7 @@ Write-Host "`nGetting sessions based on:
 if($IncludeIncomplete) { Write-Host "- Including incomplete sessions" }
 if($User) { Write-Host "- Only sessions for: $User" }
 if($URI) { Write-Host "- Only sessions containing URI: $URI" }
+if($ImportUserCSV) { Write-Host "- Users contained in CSV file: $ImportUserCSV" }
 
 # Check you have the correct module installed and can write to the path (before you start at least)
 CheckPrereq
@@ -463,6 +468,8 @@ $global:Runtime = (Get-Date)
 
 # Connect to SfBO
 ConnectSkypeOnline
+
+$EnabledUsers = @()
 
 # If single user specified
 if ($User) {
@@ -488,9 +495,53 @@ if ($User) {
     }
 
 $global:UserCount = 1
+
+# If CSV Import specified
+} elseif ($ImportUserCSV) {
+
+    $ImportedUsers = Import-CSV -Path $ImportUserCSV
+
+    # Check Imported Users are enabled
+
+    foreach ($ImportedUser in $ImportedUsers) {
+
+        # If sip: from SIP address is missing, add it
+        if (!$ImportedUser.User.StartsWith("sip:")) {
+
+            $ImportedUser.User = "sip:$($ImportedUser.User)"
+
+        }
+
+        # Reset Result
+        $ImportedUserResult = $null
+
+        # Get Result
+        $ImportedUserResult = Get-CsOnlineUser -Filter "(Enabled -eq '$True') -and (SipAddress -eq '$($ImportedUser.User)')" -ErrorAction SilentlyContinue -WarningAction SilentlyContinue | Select-Object SipAddress, DisplayName    
+
+        # User exists and is enabled for SfB
+        if ($ImportedUserResult) {
+
+            Write-Host "$($ImportedUser.User) exists and is enabled for SfB/Teams"
+
+            # Add to EnabledUsers
+            $EnabledUsers += $ImportedUserResult
+
+        } else {
+
+            Write-Warning "$($ImportedUser.User) does not exist or is not enabled for SfB/Teams"
+
+        }
     
-# Find all users
-} else {
+    }
+
+    # Count Users
+    $global:UserCount = $EnabledUsers.Count
+    Write-Host "$($EnabledUsers.Count) Enabled Users found in $ImportUserCSV" -ForegroundColor Green
+
+}
+    
+# No speficied user(s) so, find all users
+else {
 
     $EnabledUsers = FindEnabledSkypeOnlineUsers
 
