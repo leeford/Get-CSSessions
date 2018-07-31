@@ -1,11 +1,11 @@
 # Get-CSSessions
 PowerShell script to get ALL user sessions
 
-# SYNOPSIS
+## SYNOPSIS
  
     Get-CSSessions - PowerShell script to get ALL user (inc. call queue) sessions using Get-CSUserSession
  
-# DESCRIPTION
+## DESCRIPTION
 
     Author: Lee Ford
 
@@ -15,13 +15,13 @@ PowerShell script to get ALL user sessions
    
     For more details go to https://wp.me/p97Bkx-ec
 
-# LINK
+## LINK
 
     Blog: https://www.lee-ford.co.uk
     Twitter: http://www.twitter.com/lee_ford
     LinkedIn: https://www.linkedin.com/in/lee-ford/
  
-# EXAMPLE
+## EXAMPLE
    
     .\Get-CSSessions.ps1 -SessionType Audio -OutputType CSV -CSVSavePath C:\Temp\Sessions.csv -DaysToSearch 10
     Will retrieve all user audio sessions for the last 10 days from now and save as a CSV file.
@@ -50,5 +50,5 @@ PowerShell script to get ALL user sessions
     .\Get-CSSessions.ps1 -SessionType Conference -OutputType CSV -CSVSavePath C:\Temp\Sessions.csv -DaysToSearch 10 -AllInformation
     Will retrieve all user conference sessions for the last 10 days from now including full session information (e.g. QoE report) and save as a CSV file.
 
-# NOTES
+## NOTES
     v1.0 Initial release
