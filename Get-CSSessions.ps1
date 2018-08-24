@@ -130,21 +130,21 @@ function ConnectSkypeOnline {
     # If you have PSCredentials provided via -Credential set, use them and create a session
     if ($Credential) {
 
-        $global:PSSession = New-CsOnlineSession -Credential $Credential
+        $global:SfBOPSSession = New-CsOnlineSession -Credential $Credential
 
     # Else create a session and ask for details (including MFA)
     } else {
 
-        $global:PSSession = New-CsOnlineSession
+        $global:SfBOPSSession = New-CsOnlineSession
 
     }
     
     # Connect to SfBO
     Write-Host "`nConnecting to Skype for Business Online..."
-    Import-PSSession $global:PSSession -AllowClobber | Out-Null
+    Import-PSSession $global:SfBOPSSession -AllowClobber | Out-Null
 
     # Start Session Time
-    $global:PSSessionStartTime = Get-Date
+    $global:SfBOPSSessionStartTime = Get-Date
 
     Write-Host "Connected to Skype for Business Online" -ForegroundColor Green
 
@@ -170,7 +170,7 @@ function FindEnabledSkypeOnlineUsers {
 
         Write-Warning -Message "No enabled Skype Online users found. Qutting..."
         
-        Remove-PSSession $global:PSSession
+        Remove-PSSession $global:SfBOPSSession
 
         break  
         
@@ -334,7 +334,7 @@ function ExportSessionsToCSV($AllSessions) {
 
         Write-Error -Message "Unable to create CSV file - Is the file in use? Does the path exist?"
 
-        Remove-PSSession $global:PSSession
+        Remove-PSSession $global:SfBOPSSession
 
         break
 
@@ -358,7 +358,7 @@ function GetSessions($SipURI, $DisplayName, $StartTime) {
           Write-Error -Message "Error getting sessions, creating new session and trying again."
 
           # Close all PSSessions
-          $global:PSSession | Remove-PSSession
+          $global:SfBOPSSession | Remove-PSSession
 
           # Wait 10 seconds
           Start-Sleep -Seconds 10
@@ -388,15 +388,15 @@ function GetSessions($SipURI, $DisplayName, $StartTime) {
 function CheckSessionTimer() {
 
     # Calculate current session elapsed time
-    $PSSessionTimer = ((Get-Date) - $global:PSSessionStartTime)    
+    $PSSessionTimer = ((Get-Date) - $global:SfBOPSSessionStartTime)    
     
     # Check if session is over 45 minutes old
-    if ($global:PSSession.State -eq "Opened" -and $PSSessionTimer.TotalMinutes -ge "45") {
+    if ($global:SfBOPSSession.State -eq "Opened" -and $PSSessionTimer.TotalMinutes -ge "45") {
 
         Write-Warning -Message "`nPowerShell session time at $($PSSessionTimer.TotalMinutes) minutes. Closing session and creating a new session..."
             
         # Close all PSSessions
-        $global:PSSession| Remove-PSSession
+        $global:SfBOPSSession| Remove-PSSession
 
         # Wait 10 seconds
         Start-Sleep -Seconds 10
@@ -440,7 +440,7 @@ function UpdateProgress($counter, $UserSipAddress) {
     # If more than one user, track progress:        
     if ($global:UserCount -gt 1) {
 
-        Write-Progress -Activity "Processing Users... SfBO Session Timer: $((Get-Date) - $global:PSSessionStartTime) Runtime: $((Get-Date)-$global:Runtime) Processed Sessions: $($global:TotalSessions)" -Status "Processing User $counter of $global:UserCount" -CurrentOperation $UserSipAddress.Replace("sip:","") -PercentComplete (($counter/$global:UserCount) * 100)
+        Write-Progress -Activity "Processing Users... SfBO Session Timer: $((Get-Date) - $global:SfBOPSSessionStartTime) Runtime: $((Get-Date)-$global:Runtime) Processed Sessions: $($global:TotalSessions)" -Status "Processing User $counter of $global:UserCount" -CurrentOperation $UserSipAddress.Replace("sip:","") -PercentComplete (($counter/$global:UserCount) * 100)
 
     }
 
@@ -493,7 +493,7 @@ if ($User) {
         
         break
         
-        Remove-PSSession $global:PSSession
+        Remove-PSSession $global:SfBOPSSession
     }
 
 $global:UserCount = 1
@@ -552,4 +552,4 @@ else {
 ProcessUsers $EnabledUsers
 
 # Close Sessions with SfBO
-Remove-PSSession $global:PSSession
+Remove-PSSession $global:SfBOPSSession
