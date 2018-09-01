@@ -57,6 +57,7 @@
 .NOTES
     v1.0 - Initial release
     v1.1 - Added ability to specify group of users from CSV file
+    v1.2 - Added ClientVersion filter
      
 #>
 
@@ -460,7 +461,7 @@ function UpdateProgress($counter, $UserSipAddress) {
 
 # Start
 Write-Host "`n----------------------------------------------------------------------------------------------
-            `n Get-CSSessions.ps1 v1.1 - Lee Ford 2018 - https://www.lee-ford.co.uk
+            `n Get-CSSessions.ps1 v1.2 - Lee Ford 2018 - https://www.lee-ford.co.uk
             `n----------------------------------------------------------------------------------------------" -ForegroundColor Yellow
 
 # Getting sessions based on...
