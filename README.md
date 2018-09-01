@@ -61,3 +61,5 @@ LinkedIn: https://www.linkedin.com/in/lee-ford/
 v1.0 - Initial release
 
 v1.1 - Added ability to specify group of users from CSV file
+
+v1.2 - Added ClientVersion filter
