@@ -44,6 +44,9 @@ LinkedIn: https://www.linkedin.com/in/lee-ford/
     .\Get-CSSessions.ps1 -SessionType Audio -OutputType GridView -DaysToSearch 10 -URI +441234
     Will retrieve all user audio sessions for the last 10 days from now that contain a To or From URI of +441234 and output to a GridView
 
+    .\Get-CSSessions.ps1 -SessionType All -OutputType GridView -DaysToSearch 10 -ClientVersion CPE
+    Will retrieve all  audio sessions for the last 10 days from now that contain a To or From ClientVersion of CPE (Lync Phone Edition) and output to a GridView
+
     .\Get-CSSessions.ps1 -SessionType Audio -OutputType CSV -CSVSavePath C:\Temp\Sessions.csv -DaysToSearch 10 -User user@domain.com -URI +441234 -EndDate "04/24/2018 18:00"
     Will retrieve user audio sessions for user@domain.com between 14th April 2018 18:00 to 24th April 2018 18:00 that contain a To or From URI of +441234 and save to a CSV file.
 
