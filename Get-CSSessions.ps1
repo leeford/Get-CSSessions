@@ -199,20 +199,6 @@ function ProcessUsers($Users) {
     # Put users in alphabetical order
     $Users = $Users | Sort-Object -Property SipAddress
 
-    # Set end date/time for all users (now or specified paramter EndDate)
-    if($EndDate) {
-    
-        $global:EndTime = $EndDate
-
-    } else {
-
-        $global:EndTime = Get-Date
-
-    }
-
-    # Set start date/time for all users (end date/time minus how many days)
-    $global:StartTime = $global:EndTime.AddDays(-$DaysToSearch)
-
     # Cycle through each user
     foreach ($User in $Users) {
 
@@ -464,9 +450,23 @@ Write-Host "`n------------------------------------------------------------------
             `n Get-CSSessions.ps1 v1.2 - Lee Ford 2018 - https://www.lee-ford.co.uk
             `n----------------------------------------------------------------------------------------------" -ForegroundColor Yellow
 
+# Set end date/time for (now or specified paramter EndDate)
+if($EndDate) {
+
+    $global:EndTime = $EndDate
+
+} else {
+
+    $global:EndTime = Get-Date
+
+}
+
+# Set start date/time (end date/time minus how many days)
+$global:StartTime = $global:EndTime.AddDays(-$DaysToSearch)
+
 # Getting sessions based on...
 Write-Host "`nGetting sessions based on:
-`r- Betweeen $($global:StartTime) and $($global:EndTime)
+`r- Between $($global:StartTime) and $($global:EndTime)
 `r- Session type: $SessionType"
     
 if($IncludeIncomplete) { Write-Host "- Including incomplete sessions" }
