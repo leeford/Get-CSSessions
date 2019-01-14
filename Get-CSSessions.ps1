@@ -58,6 +58,7 @@
     v1.0 - Initial release
     v1.1 - Added ability to specify group of users from CSV file
     v1.2 - Added ClientVersion filter
+    v1.3 - Added OverrideAdminDomain for Hybrid Deployments
      
 #>
 
@@ -74,7 +75,9 @@ param(
     [Parameter(mandatory=$false)][string]$ClientVersion,
     [Parameter(mandatory=$false)][datetime]$EndDate,
     [Parameter(mandatory=$false)][PSCredential]$Credential,
-    [Parameter(mandatory=$false)][string]$ImportUserCSV
+    [Parameter(mandatory=$false)][string]$ImportUserCSV,
+    [Parameter(mandatory=$false)][string]$OverrideAdminDomain
+
 )
 
 # Check prerequisites
@@ -135,12 +138,29 @@ function ConnectSkypeOnline {
     # If you have PSCredentials provided via -Credential set, use them and create a session
     if ($Credential) {
 
-        $global:SfBOPSSession = New-CsOnlineSession -Credential $Credential
+        if ($OverrideAdminDomain) {
+
+            $global:SfBOPSSession = New-CsOnlineSession -Credential $Credential -OverrideAdminDomain $OverrideAdminDomain
+
+        } else {
+
+            $global:SfBOPSSession = New-CsOnlineSession -Credential $Credential
+
+        }
 
     # Else create a session and ask for details (including MFA)
     } else {
 
-        $global:SfBOPSSession = New-CsOnlineSession
+
+        if ($OverrideAdminDomain) {
+
+            $global:SfBOPSSession = New-CsOnlineSession -OverrideAdminDomain $OverrideAdminDomain
+
+        } else {
+
+            $global:SfBOPSSession = New-CsOnlineSession
+
+        }
 
     }
     
