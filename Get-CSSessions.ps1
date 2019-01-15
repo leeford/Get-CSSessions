@@ -537,12 +537,12 @@ $global:UserCount = 1
 
     # Check Imported Users are enabled
 
-    foreach ($ImportedUser in $ImportedUsers) {
+    $ImportedUsers | ForEach-Object {
 
-        # If sip: from SIP address is missing, add it
-        if (!$ImportedUser.User.StartsWith("sip:")) {
+                # If sip: from SIP address is missing, add it
+        if (!$_.User.StartsWith("sip:")) {
 
-            $ImportedUser.User = "sip:$($ImportedUser.User)"
+            $_.User = "sip:$($_.User)"
 
         }
 
@@ -550,19 +550,19 @@ $global:UserCount = 1
         $ImportedUserResult = $null
 
         # Get Result
-        $ImportedUserResult = Get-CsOnlineUser -Filter "(Enabled -eq '$True') -and (SipAddress -eq '$($ImportedUser.User)')" -ErrorAction SilentlyContinue -WarningAction SilentlyContinue | Select-Object SipAddress, DisplayName    
+        $ImportedUserResult = Get-CsOnlineUser -Filter "(Enabled -eq '$True') -and (SipAddress -eq '$($_.User)')" -ErrorAction SilentlyContinue -WarningAction SilentlyContinue | Select-Object SipAddress, DisplayName    
 
         # User exists and is enabled for SfB
         if ($ImportedUserResult) {
 
-            Write-Host "$($ImportedUser.User) exists and is enabled for SfB/Teams"
+            Write-Host "$($_.User) exists and is enabled for SfB/Teams"
 
             # Add to EnabledUsers
             $EnabledUsers += $ImportedUserResult
 
         } else {
 
-            Write-Warning "$($ImportedUser.User) does not exist or is not enabled for SfB/Teams"
+            Write-Warning "$($_.User) does not exist or is not enabled for SfB/Teams"
 
         }
     
