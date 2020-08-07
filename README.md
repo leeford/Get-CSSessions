@@ -1,9 +1,11 @@
 # Get-CSSessions
-PowerShell script to get ALL user sessions
+PowerShell script to get ALL SfB user sessions
+
+For Microsoft Teams PSTN call records, please look at [Get-TeamsPSTNCallRecords](https://github.com/leeford/Get-TeamsPSTNCallRecords)
 
 ## SYNOPSIS
  
-Get-CSSessions - PowerShell script to get ALL user (inc. call queue) sessions using Get-CSUserSession
+Get-CSSessions - PowerShell script to get ALL SfB user (inc. call queue) sessions using Get-CSUserSession
  
 ## DESCRIPTION
 
